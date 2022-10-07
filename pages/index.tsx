@@ -11,13 +11,22 @@ type ContentItem = {
   conjugations?: string[];
 };
 
-const Section: React.FC<{ title: string; contentList: ContentItem[] }> = ({
-  title,
-  contentList,
-}) => {
+const Section: React.FC<{
+  title: string;
+  contentList: ContentItem[];
+  searchValue?: string;
+}> = ({ title, contentList, searchValue }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const handleHeaderClick = () => setIsCollapsed(!isCollapsed);
+
+  // note search functionality is for english search inputs only
+  const filteredContentList =
+    !searchValue || searchValue === ""
+      ? contentList
+      : contentList.filter((item) =>
+          item.definition.toLowerCase().includes(searchValue.toLowerCase())
+        );
 
   return (
     <div>
@@ -33,12 +42,12 @@ const Section: React.FC<{ title: string; contentList: ContentItem[] }> = ({
         <div className="mx-auto -pl-5 flex items-center gap-1">
           <span>{title}</span>{" "}
           <span className="text-slate-400 text-base">
-            ({contentList.length})
+            ({filteredContentList.length})
           </span>
         </div>
       </h2>
       <ul className={classname({ hidden: isCollapsed })}>
-        {contentList.map((contentItem) => (
+        {filteredContentList.map((contentItem) => (
           <li
             className="flex flex-col p-2 m-2 border-b"
             key={contentItem.definition}
@@ -96,6 +105,8 @@ const Home: NextPage = () => {
 
   const [searchValue, setSearchValue] = useState();
 
+  const onSearchChange = (e) => setSearchValue(e.target.value.trim());
+
   return (
     <div className="min-h-screen">
       <Head>
@@ -135,19 +146,43 @@ const Home: NextPage = () => {
               className="p-2 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300"
               placeholder="Search..."
               required
-              onChange={(e) => console.log(e.target.value)}
+              onChange={onSearchChange}
               value={searchValue}
             />
           </div>
         </form>
 
         <div className="flex flex-col gap-1">
-          <Section title="Verbs 🏃‍♀️" contentList={verbs} />
-          <Section title="Nouns 🚙" contentList={nouns} />
-          <Section title="Adjectives 🎨" contentList={adjectives} />
-          <Section title="Particles" contentList={particles} />
-          <Section title="Grammar 👩‍🏫" contentList={grammar} />
-          <Section title="Sentence builder" contentList={[]} />
+          <Section
+            title="Verbs 🏃‍♀️"
+            contentList={verbs}
+            searchValue={searchValue}
+          />
+          <Section
+            title="Nouns 🚙"
+            contentList={nouns}
+            searchValue={searchValue}
+          />
+          <Section
+            title="Adjectives 🎨"
+            contentList={adjectives}
+            searchValue={searchValue}
+          />
+          <Section
+            title="Particles"
+            contentList={particles}
+            searchValue={searchValue}
+          />
+          <Section
+            title="Grammar 👩‍🏫"
+            contentList={grammar}
+            searchValue={searchValue}
+          />
+          <Section
+            title="Sentence builder"
+            contentList={[]}
+            searchValue={searchValue}
+          />
         </div>
       </main>
     </div>
