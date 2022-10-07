@@ -125,7 +125,7 @@ const Home: NextPage = () => {
 
   const [searchValue, setSearchValue] = useState();
 
-  const onSearchChange = (e) => setSearchValue(e.target.value.trim());
+  const onSearchChange = (e: any) => setSearchValue(e.target.value.trim());
 
   return (
     <div className="min-h-screen">
