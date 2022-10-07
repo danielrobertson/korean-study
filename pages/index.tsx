@@ -132,6 +132,10 @@ const Home: NextPage = () => {
       <Head>
         <title>🇰🇷📚</title>
         {/* <link rel="icon" href="/favicon.ico" /> */}
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
       </Head>
 
       <main className="flex w-full flex-col sm:mx-auto sm:w-96">
