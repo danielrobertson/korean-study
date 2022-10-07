@@ -167,7 +167,7 @@ const Home: NextPage = () => {
             <input
               type="search"
               id="default-search"
-              className="p-2 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300"
+              className="p-2 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-none border border-gray-300"
               placeholder="Search..."
               required
               onChange={onSearchChange}
