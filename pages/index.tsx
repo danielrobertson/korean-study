@@ -1,86 +1,133 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
+import { useState } from "react";
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import classname from "classnames";
 
 const Home: NextPage = () => {
+  const [verbs, setVerbs] = useState([
+    { base: "가다", definition: "Go", conjugations: ["가요", "갔어요"] },
+    { base: "크다", definition: "Big", conjugations: ["커요", "컸어요"] },
+    { base: "있다", definition: "Have/exist", conjugations: ["", ""] },
+    { base: "없다", definition: "Not have/exist", conjugations: ["", ""] },
+  ]);
+
+  const [nounds, setNouns] = useState([
+    { base: "약국", definition: "Pharmacy" },
+    { base: "기숙사", definition: "Dorm" },
+    { base: "학교", definition: "School" },
+  ]);
+
+  const [isVerbsCollapsed, setIsVerbsCollapsed] = useState(false);
+  const [isNounsCollapsed, setIsNounsCollapsed] = useState(false);
+  const [isGrammarCollapsed, setIsGrammarCollapsed] = useState(false);
+  const [isSentenceBuilderCollapsed, setIsSentenceBuilderCollapsed] =
+    useState(false);
+
+  const [searchValue, setSearchValue] = useState();
+
+  const handleVerbsSectionClick = () => setIsVerbsCollapsed(!isVerbsCollapsed);
+  const handleNounsSectionClick = () => setIsNounsCollapsed(!isNounsCollapsed);
+  const handleGrammarSectionClick = () =>
+    setIsGrammarCollapsed(!isGrammarCollapsed);
+  const handleSentenceBuilderSectionClick = () =>
+    setIsSentenceBuilderCollapsed(!isSentenceBuilderCollapsed);
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className="min-h-screen">
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>🇰🇷📚</title>
+        {/* <link rel="icon" href="/favicon.ico" /> */}
       </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
-        </p>
-
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
+      <main className="flex w-full flex-col sm:mx-auto sm:w-96">
+        <form className="m-2">
+          <label
+            htmlFor="default-search"
+            className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
           >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and its API.
-            </p>
-          </a>
+            Search
+          </label>
+          <div className="relative">
+            <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+              <svg
+                aria-hidden="true"
+                className="w-5 h-5 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
+              </svg>
+            </div>
+            <input
+              type="search"
+              id="default-search"
+              className="p-2 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300"
+              placeholder="Search..."
+              required
+              onChange={(e) => console.log(e.target.value)}
+              value={searchValue}
+            />
+          </div>
+        </form>
 
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
+        <div className="flex flex-col">
+          <h2
+            className="text-xl text-center py-1 bg-slate-100"
+            onClick={handleVerbsSectionClick}
           >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
+            Verbs
+          </h2>
+          <ul className={classname({ hidden: isVerbsCollapsed })}>
+            {verbs.map((verb) => (
+              <li
+                className="flex flex-col p-2 m-2 border-b"
+                key={verb.definition}
+              >
+                <div className="flex justify-between">
+                  <h3 className="font-bold ">{verb.base}</h3>
+                  <div className="">{verb.definition}</div>
+                </div>
+                <div className="flex text-slate-500 gap-0.5 text-xs">
+                  {verb.conjugations.map((conjugation) => (
+                    <div className="">{conjugation}</div>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
+          <h2
+            className="text-xl text-center py-1 bg-slate-100"
+            onClick={handleNounsSectionClick}
           >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
+            Nouns
+          </h2>
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
+          <h2
+            className="text-xl text-center py-1 bg-slate-100"
+            onClick={handleGrammarSectionClick}
           >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+            Grammar
+          </h2>
+
+          <h2
+            className="text-xl text-center py-1 bg-slate-100"
+            onClick={handleSentenceBuilderSectionClick}
+          >
+            Sentence builder
+          </h2>
         </div>
       </main>
-
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </a>
-      </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
