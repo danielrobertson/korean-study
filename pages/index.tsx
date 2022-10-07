@@ -4,11 +4,39 @@ import Head from "next/head";
 import classname from "classnames";
 import ChevronUp from "components/chevron-up.svg";
 import ChevronDown from "components/chevron-down.svg";
+import StarFilled from "components/star-filled.svg";
+import Star from "components/star.svg";
 
 type ContentItem = {
   base: string;
   definition: string;
   conjugations?: string[];
+};
+
+const ContentItem: React.FC<{ item: ContentItem }> = ({ item }) => {
+  const [isStarred, setIsStarred] = useState(false);
+  return (
+    <>
+      <div className="flex justify-between">
+        <h3 className="font-bold ">{item.base}</h3>
+        <div className="flex items-center gap-2">
+          <div>{item.definition}</div>
+          <button onClick={() => setIsStarred(!isStarred)}>
+            {isStarred ? (
+              <StarFilled className="h-4 w-4 fill-yellow-500" />
+            ) : (
+              <Star className="h-4 w-4 fill-slate-400" />
+            )}
+          </button>
+        </div>
+      </div>
+      {item.conjugations && (
+        <div className="flex text-slate-500 gap-0.5 text-xs">
+          {item.conjugations.join(", ")}
+        </div>
+      )}
+    </>
+  );
 };
 
 const Section: React.FC<{
@@ -52,15 +80,7 @@ const Section: React.FC<{
             className="flex flex-col p-2 m-2 border-b"
             key={contentItem.definition}
           >
-            <div className="flex justify-between">
-              <h3 className="font-bold ">{contentItem.base}</h3>
-              <div className="">{contentItem.definition}</div>
-            </div>
-            {contentItem.conjugations && (
-              <div className="flex text-slate-500 gap-0.5 text-xs">
-                {contentItem.conjugations.join(", ")}
-              </div>
-            )}
+            <ContentItem item={contentItem} />
           </li>
         ))}
       </ul>
@@ -169,7 +189,7 @@ const Home: NextPage = () => {
             searchValue={searchValue}
           />
           <Section
-            title="Particles"
+            title="Particles 🌌"
             contentList={particles}
             searchValue={searchValue}
           />
@@ -179,7 +199,7 @@ const Home: NextPage = () => {
             searchValue={searchValue}
           />
           <Section
-            title="Sentence builder"
+            title="Sentence builder 💬"
             contentList={[]}
             searchValue={searchValue}
           />
